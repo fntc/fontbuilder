@@ -3,7 +3,7 @@
 Build a docker container with ready-to-run fontawesome-actions stack.
 Create your own font using command line docker container!
 
-docker run fatools
+
 
 
 # What it contains
@@ -12,11 +12,23 @@ The Project builds a docker container with https://github.com/fontforge/fontforg
 Using command line you can run https://github.com/nyon/fontawesome-actions inside the container or
 mount a volume with a custom version of fontawesome-actions using
 
+# How to use
 
-docker run fatools -v //c/DEV/TNT-FONT/src:/fa-actions
+Build fontawesome fonts yourself:
 
-docker run fatools -v /home/user/src:/fa-actions
+> docker run fntc/fontbuilder
 
-//c/Users/sebas/Desktop/fontawesome-actions:/fa-actions
+Use fontawesome pro 
 
-docker run -v c:/Users/sebas/Desktop/fontawesome-actions:/fa-actions fntc/fonttool python /fa-actions/fatnt.py
+> docker run -v /home/user/fontawesome-pro:/fa-actions/fontawesome fntc/fontbuilder
+
+Build your own font using your own script
+
+- Create the main.py based on https://github.com/nyon/fontawesome-actions
+- Place all assets in myfont and execute main.py
+
+> docker run -v /home/user/src:/fa-actions/myfont fntc/fontbuilder /fa-actions/myfont/main.py
+
+Build your own font using your own script, based on fontawesome pro
+
+> docker run -v /home/user/src:/fa-actions/myfont -v /home/user/fontawesome-pro:/fa-actions/fontawesome fntc/fontbuilder /fa-actions/src/myfont.py
