@@ -30,6 +30,10 @@ RUN cd /tmp/fontforge-20190801 && ./bootstrap && ./configure --enable-python-scr
 
 RUN cd /tmp && git clone --branch v0.17.0 --recursive https://github.com/nyon/fontawesome-actions.git && mv fontawesome-actions /fa-actions
 
+RUN curl -SL https://github.com/wget/ttf2eot/archive/v0.0.3.tar.gz | tar -xzC /tmp
+
+RUN cd /tmp/ttf2eot-0.0.3 && make && cp ttf2eot /usr/local/bin
+
 WORKDIR /fa-actions
 ENTRYPOINT ["/usr/bin/python"]
 CMD ["/fa-actions/main.py"]
