@@ -18,7 +18,8 @@ RUN apt-get update && apt-get install -y \
  build-essential \
  git \
  python \
- python-dev 
+ python-dev \
+ python-pip
  
 # python3 \
 # python3-dev
@@ -33,6 +34,8 @@ RUN cd /tmp && git clone --branch v0.17.0 --recursive https://github.com/nyon/fo
 RUN curl -SL https://github.com/wget/ttf2eot/archive/v0.0.3.tar.gz | tar -xzC /tmp
 
 RUN cd /tmp/ttf2eot-0.0.3 && make && cp ttf2eot /usr/local/bin
+
+RUN pip install fonttools[ufo,lxml,woff,unicode,brotli,other]
 
 WORKDIR /fa-actions
 ENTRYPOINT ["/usr/bin/python"]
