@@ -29,7 +29,9 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1 && p
 
 RUN curl -SL https://github.com/fontforge/fontforge/releases/download/20201107/fontforge-20201107.tar.xz | tar -xJC /tmp
 
-RUN cd /tmp/fontforge-20201107 && mkdir build && cd build && cmake -DENABLE_GUI=OFF -GNinja .. && ninja && ninja install && ldconfig && cd /tmp && rm -R fontforge-20201107
+RUN cd /tmp/fontforge-20201107 && mkdir build && cd build && \
+ env PYTHON=python3 cmake -DENABLE_GUI=OFF -DCMAKE_INSTALL_PREFIX=/usr -GNinja .. && \
+ ninja && ninja install && ldconfig && cd /tmp && rm -R fontforge-20201107
 
 RUN cd /tmp && git clone --recursive https://github.com/nyon/fontawesome-actions.git && mv fontawesome-actions /fa-actions
 
