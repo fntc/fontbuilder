@@ -23,17 +23,17 @@ RUN apt-get update && apt-get install -y \
  python-pip\
  python3-pip \
  woff2 \
- xz-utils && apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var$
+ xz-utils && apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1 && $
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1 && python --version
 
-RUN curl -SL https://github.com/fontforge/fontforge/releases/download/20201107/$
+RUN curl -SL https://github.com/fontforge/fontforge/releases/download/20201107/fontforge-20201107.tar.xz | tar -xJC /tmp
 
-RUN cd /tmp/fontforge-20201107 && mkdir build && cd build && cmake -DENABLE_GUI$
+RUN cd /tmp/fontforge-20201107 && mkdir build && cd build && cmake -DENABLE_GUI=OFF -GNinja .. && ninja && ninja install && ldconfig && cd /tmp && rm -R fontforge-20201107
 
-RUN cd /tmp && git clone --branch v0.17.0 --recursive https://github.com/nyon/f$
+RUN cd /tmp && git clone --branch v0.17.0 --recursive https://github.com/nyon/fontawesome-actions.git && mv fontawesome-actions /fa-actions
 
-RUN curl -SL https://github.com/wget/ttf2eot/archive/v0.0.3.tar.gz | tar -xzC /$
+RUN curl -SL https://github.com/wget/ttf2eot/archive/v0.0.3.tar.gz | tar -xzC /tmp
 
 RUN cd /tmp/ttf2eot-0.0.3 && make && cp ttf2eot /usr/local/bin
 
