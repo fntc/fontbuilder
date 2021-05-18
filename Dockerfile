@@ -16,18 +16,16 @@ RUN apt-get update && apt-get install -y \
  ninja-build \
  cmake \
  build-essential \
+ gettext \
  git \
  python \
  python-dev \
- python-pip
- 
-# python3 \
-# python3-dev
-#RUN ln -s /usr/bin/python3 /usr/bin/python
+ python-pip\
+ xz-utils && apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
-RUN curl -SL https://github.com/fontforge/fontforge/releases/download/20190801/fontforge-20190801.tar.gz | tar -xzC /tmp
+RUN curl -SL https://github.com/fontforge/fontforge/releases/download/20201107/fontforge-20201107.tar.xz | tar -xJC /tmp
 
-RUN cd /tmp/fontforge-20190801 && ./bootstrap && ./configure --enable-python-scripting --enable-python-extension && make && make install && ldconfig && cd .. && rm -R fontforge-20190801
+RUN cd /tmp/fontforge-20201107 && mkdir build && cd build && cmake -DENABLE_PYTHON_SCRIPTING=true -DENABLE_PYTHON_EXTENSION=true -GNinja .. && ninja && ninja install && cd /tmp && rm -R fontforge-20201107
 
 RUN cd /tmp && git clone --branch v0.17.0 --recursive https://github.com/nyon/fontawesome-actions.git && mv fontawesome-actions /fa-actions
 
@@ -35,7 +33,7 @@ RUN curl -SL https://github.com/wget/ttf2eot/archive/v0.0.3.tar.gz | tar -xzC /t
 
 RUN cd /tmp/ttf2eot-0.0.3 && make && cp ttf2eot /usr/local/bin
 
-RUN pip install fonttools[ufo,lxml,woff,unicode,brotli,other]
+RUN pip install fonttools[ufo,lxml,woff,unicode]
 
 WORKDIR /fa-actions
 ENTRYPOINT ["/usr/bin/python"]
