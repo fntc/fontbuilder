@@ -31,7 +31,7 @@ RUN curl -SL https://github.com/fontforge/fontforge/releases/download/20201107/f
 
 RUN cd /tmp/fontforge-20201107 && mkdir build && cd build && cmake -DENABLE_GUI=OFF -GNinja .. && ninja && ninja install && ldconfig && cd /tmp && rm -R fontforge-20201107
 
-RUN cd /tmp && git clone --branch v0.17.0 --recursive https://github.com/nyon/fontawesome-actions.git && mv fontawesome-actions /fa-actions
+RUN cd /tmp && git clone --recursive https://github.com/nyon/fontawesome-actions.git && mv fontawesome-actions /fa-actions
 
 RUN curl -SL https://github.com/wget/ttf2eot/archive/v0.0.3.tar.gz | tar -xzC /tmp
 
