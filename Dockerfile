@@ -1,6 +1,9 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
-RUN apt-get update && apt-get install -y \
+ENV TZ=Europe/Berlin
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y -q \
  libjpeg-dev \
  libtiff5-dev \
  libpng-dev \
@@ -18,9 +21,6 @@ RUN apt-get update && apt-get install -y \
  build-essential \
  gettext \
  git \
- python \
- python-dev \
- python-pip\
  python3-pip \
  woff2 \
  xz-utils && apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/{apt,dpkg,cache,log}/
@@ -30,7 +30,7 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1 && p
 RUN curl -SL https://github.com/fontforge/fontforge/releases/download/20201107/fontforge-20201107.tar.xz | tar -xJC /tmp
 
 RUN cd /tmp/fontforge-20201107 && mkdir build && cd build && \
- env PYTHON=python3 cmake -DENABLE_GUI=OFF -DCMAKE_INSTALL_PREFIX=/usr -GNinja .. && \
+ cmake -DENABLE_GUI=OFF -DCMAKE_INSTALL_PREFIX=/usr -GNinja .. && \
  ninja && ninja install && ldconfig && cd /tmp && rm -R fontforge-20201107
 
 RUN cd /tmp && git clone --recursive https://github.com/nyon/fontawesome-actions.git && mv fontawesome-actions /fa-actions
